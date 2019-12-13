@@ -2,8 +2,8 @@
 const int BTN_COUNT = 20;
 //пины кнопок
 int btn[BTN_COUNT]; // Присвоить номера пинов!!!!
-//массив с диодами
-int led[BTN_COUNT]; // Присвоить номера пинов!!!!
+//массив с состояниями диодов
+int ledState[BTN_COUNT]; // Присвоить номера!!!!
 //массив с масками (какие должы быть состояния кнопок во время игры)
 boolean mask[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -15,7 +15,7 @@ void setup() {
   //выбираем режим работы для пинов диодов и кнопок
   for (int i = 0; i < BTN_COUNT; i++) {
     pinMode(btn[i], INPUT_PULLUP);
-    pinMode(led[i], OUTPUT);
+    //pinMode(led[i], OUTPUT);
   }
   //последоательный порт для отладки
   Serial.begin(9600);
@@ -51,7 +51,7 @@ void chooseTheButton() {
     int a = random(0, BTN_COUNT);
     if (mask[a] == false) {
       mask[a] = true;
-      digitalWrite(led[a], HIGH);
+      changeLedState(a,HIGH);
       Serial.print("I've chosen: ");
       Serial.println(a);
       break;
@@ -70,7 +70,8 @@ void waitForPressed() {
       Serial.println("All btns had been pressed");
       for (int i = 0; i < BTN_COUNT; i++) {
         if (mask[i] == true) {
-          digitalWrite(led[i], LOW);
+          changeLedState(i,LOW);
+          //digitalWrite(led[i], LOW);
           Serial.print("Switched off the led number: ");
           Serial.println(i);
         }
@@ -131,5 +132,6 @@ void loser() {
  * Функция должна изменять массив состояний светодиодов и загружать этот массив в регистр
 */
 void changeLedState(byte number, boolean state) {
+  
   
 }
