@@ -1,10 +1,9 @@
 //количество кнопок и диодов
 const int BTN_COUNT = 20;
-
-//пины кнопок
-int btn[BTN_COUNT];
+//массив с кнопками
+int btn[BTN_COUNT]; // Присвоить номера пинов!!!!
 //массив с диодами
-int led[BTN_COUNT];
+int led[BTN_COUNT]; // Присвоить номера пинов!!!!
 //массив с масками (какие должы быть состояния кнопок во время игры)
 boolean mask[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -30,6 +29,7 @@ void loop() {
 }
 
 void wallie() {
+  /*Игра Wallie*/
   chooseTheButton();
   waitForPressed();
   waitWhilePressed();
