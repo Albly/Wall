@@ -1,3 +1,8 @@
+#include <SPI.h>
+#include <Adafruit_GFX.h>
+#include <Max72xxPanel.h>
+
+
 //количество кнопок и диодов
 const int BTN_COUNT = 20;
 //пины кнопок
@@ -6,6 +11,13 @@ int btn[BTN_COUNT]; // Присвоить номера пинов!!!!
 int ledState[BTN_COUNT]; // Присвоить номера!!!!
 //массив с масками (какие должы быть состояния кнопок во время игры)
 boolean mask[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+
+const int pinCS = 10; // ПИН CS для матрицы
+const int numberOfHorizontalDisplays = 4; //количество горизонтальных матриц
+const int numberOfVerticalDisplays = 1; //количество вертикальных матриц
+Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays); // объект матрица
+
 
 //счётчик
 unsigned long currentTime = 0;
@@ -19,6 +31,8 @@ void setup() {
   }
   //последоательный порт для отладки
   Serial.begin(9600);
+  //выбор яркости матрицы
+  matrix.setIntensity(2);
 
 }
 
