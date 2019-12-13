@@ -29,7 +29,7 @@ void loop() {
 
 }
 
-/*===========================================================================================================WALLIE*/
+/*===========================================================================================================*/
 /*Выбор случайной кнопки
  * Использует аналоговый пин А5 для снятия наводок
  * Выбирает случайное число от 0 до BTN_COUNT
@@ -53,3 +53,21 @@ void chooseTheButton(){
   }
 }
 /*===========================================================================================================*/
+void waitForPressed(){
+Serial.println("Waiting for pressing");
+for(currentTime = millis(); millis()-currentTime < 5000;){
+  if(isAllPressed()){
+    Serial.println("All btns had been pressed");
+    for(int i=0; i < BTN_COUNT; i++){
+      if(mask[i]==true){
+        digitalWrite(ledPins[i], LOW);
+        Serial.print("Switched off the led number: ");
+        Serial.println(i);
+      }
+     }
+     return;
+    }
+  }
+  Serial.println("Btns hadn't been pressed");
+  loser();
+}
