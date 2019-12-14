@@ -3,7 +3,7 @@ const byte LED_PIN 5
 const byte NUM_LEDS 60
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 byte score1 = 0; //кол-во нажатий первой стороной
-byte score1 = 0; //кол-во нажатий второй стороной
+byte score2 = 0; //кол-во нажатий второй стороной
 byte int1 = 2; //прерывание 1 группы кнопок
 byte int2 = 3; //прерывание 2 группы кнопок
 
