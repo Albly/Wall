@@ -12,6 +12,9 @@ int ledState[BTN_COUNT]; // Присвоить номера!!!!
 //массив с масками (какие должы быть состояния кнопок во время игры)
 boolean mask[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //счёт первого и второго игрока
+int timers[BTN_COUNT];
+boolean flagInterrupt = false;
+
 int score1 = 0;
 int score2 = 0;
 
@@ -39,7 +42,8 @@ void setup() {
   //выбор яркости матрицы
   matrix.setIntensity(7);
 
-  matrix.setRotation(0, 1);    // The same hold for the last display
+  //поворот матриц
+  matrix.setRotation(0, 1);
   matrix.setRotation(1, 1);
   matrix.setRotation(2, 1);
   matrix.setRotation(3, 1);
@@ -72,4 +76,16 @@ void loser() {
 void changeLedState(byte number, boolean state) {
 
 
+}
+
+/*===========================================================================================================*/
+/* Функция победы в раунде
+*/
+void winRound() {
+
+}
+/*===========================================================================================================*/
+int Random(int a, int b) {
+  randomSeed(analogRead(A5));
+  return random(a, b);
 }
