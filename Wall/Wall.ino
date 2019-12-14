@@ -8,7 +8,6 @@ const int BTN_COUNT = 20;
 //Пины с группами прерываний
 const int ISR_1 = 2;
 const int ISR_2 = 3;
-const int ZEROS[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
 
 //пины кнопок
 int btn[BTN_COUNT]; // Присвоить номера пинов!!!!
@@ -18,7 +17,7 @@ int ledState[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 boolean mask[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //счёт первого и второго игрока
 int timers[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} ;
-int timer = 0; 
+int timer = 0;
 boolean flagInterrupt = false;
 boolean flag = false;
 
@@ -87,10 +86,17 @@ void loser() {
    Функция должна изменять массив состояний светодиодов и загружать этот массив в регистр
 */
 void changeLedState(byte number, boolean state) {
-
+  // TODO: ДОПИСАТЬ!!!
+  ledState[number] = state;
 
 }
-
+/*===========================================================================================================*/
+void changeAllLedState(boolean state) {
+  // TODO: ДОПИСАТЬ!!!
+  for (int i = 0; i < BTN_COUNT; i++) {
+    
+  }
+}
 /*===========================================================================================================*/
 /* Функция победы в раунде
 */
@@ -101,4 +107,24 @@ void winRound() {
 int Random(int a, int b) {
   randomSeed(analogRead(A5));
   return random(a, b);
+}
+/*===========================================================================================================*/
+/*
+   Обнуляет все переменные используемые в играх
+   НЕ ОБНУЛЯЕТ индекс игры
+   Записывает в currentTime текущее время
+
+*/
+void reset() {
+  for (int i = 0; i < BTN_COUNT; i++) {
+    mask[i] = 0;
+    timers[i] = 0;
+  }
+  changeAllLedState(LOW);
+  timer = 0;
+  flagInterrupt = false;
+  flag = false;
+  score1 = 0;
+  score2 = 0;
+  currentTime = millis();
 }
