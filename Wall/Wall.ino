@@ -94,7 +94,7 @@ void changeLedState(byte number, boolean state) {
 void changeAllLedState(boolean state) {
   // TODO: ДОПИСАТЬ!!!
   for (int i = 0; i < BTN_COUNT; i++) {
-    
+
   }
 }
 /*===========================================================================================================*/
