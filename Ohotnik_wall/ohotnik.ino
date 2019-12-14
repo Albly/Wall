@@ -1,20 +1,18 @@
 #include <Adafruit_NeoPixel.h>
-const byte LED_PIN 5
-const byte NUM_LEDS 60
+#define LED_PIN 5
+#define NUM_LEDS 60
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
-byte score1 = 0; //кол-во нажатий первой стороной
-byte score2 = 0; //кол-во нажатий второй стороной
+
+//задаем номера пинов для кнопок и их значения по умолчанию
+byte score1 = 0; //кол-во правильных нажатий первой стороной
+byte score2 = 0; //кол-во правильных нажатий второй стороной
+byte btnPins[BTN_COUNT] = {49, 47, 45, 43, 41, 39, 37, 35, 33, 31, 48, 46, 44, 42, 40, 38, 36, 34, 32, 30}; //номера пинов
+byte btnState[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //начальные состояния кнопок
 byte int1 = 2; //прерывание 1 группы кнопок
 byte int2 = 3; //прерывание 2 группы кнопок
 
-//задаем номера пинов для кнопок и их значения по умолчанию
-byte btnPins[BTN_COUNT] = {49, 47, 45, 43, 41, 39, 37, 35, 33, 31, 48, 46, 44, 42, 40, 38, 36, 34, 32, 30}; //номера пинов
-byte btnState[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //начальные состояния кнопок
+byte maxScore=50;//максимальный счет
 
-bool state1 = 0;    //флаг нажатий первых 10 кнопок
-bool state2 = 0;    //флаг нажатий вторых 10 кнопок
-
-//=======================================================================================
 //прерывание 1
 void BUTTON1() {
   //деактивируем прерывания
@@ -38,6 +36,7 @@ void BUTTON1() {
   attachInterrupt(digitalPinToInterrupt (int2), BUTTON2, RISING);
 }
 
+//прерывание 2
 void BUTTON2() {
   //деактивируем прерывания
   detachInterrupt(digitalPinToInterrupt(int1));
@@ -74,107 +73,90 @@ void setup() {
 }
 
 void loop() {
-  //вызываем функцию канат с параметрами (цвет каната r, g, b, номера пинов прерывания, яркость)
-  kanat(0, 255, 0, int1, int2, 250);
+  ohotnik(400, 2, 3, 50, 1);
 }
 
-
-//=======================================================================================
-void kanat(byte R, byte G, byte B, byte int1, byte int2, byte brightness) {
-
+//==================================================================================
+void ohotnik(int deltaTime, byte int1, byte int2, byte brightness, byte diviation) {
   strip.begin();
 
-  //активируем прерывания
+  //разрешить прерывания
   attachInterrupt(digitalPinToInterrupt (int1), BUTTON1, RISING);
   attachInterrupt(digitalPinToInterrupt (int2), BUTTON2, RISING);
 
-  strip.setBrightness(brightness);  //устанавливаем яркость ленты
+  //установить яркость
+  strip.setBrightness(brightness);
 
-  //обнуление цвета пикселей
-  for (byte i = 0; i <= 59; i++)
+  //пределы генерации светящегося пикселя
+  byte pixel = random(diviation, 60 - diviation);
+
+  //рандомом задается вероятность появления нецелевых цветов
+  if (random(0, 2)) {
+    for (byte i = pixel - diviation; i <= pixel + diviation; i++)
+    {
+      strip.setPixelColor(i, strip.Color(0, 0, 255));
+    }
+  }
+  else {
+    for (byte i = pixel - diviation; i <= pixel + diviation; i++)
+    {
+      strip.setPixelColor(i, strip.Color(0, 255, 0));
+    }
+  }
+  strip.show();
+
+  //задержка горения цвета
+  delay(deltaTime);
+
+  //обнулить цвета
+  for (byte i = pixel - diviation; i <= pixel + diviation; i++)
   {
     strip.setPixelColor(i, strip.Color(0, 0, 0));
   }
-
-  //заполнение центра (2 пикселя горят по умолчанию)
-  strip.setPixelColor(29, strip.Color(R, G, B));
-  strip.setPixelColor(30, strip.Color(R, G, B));
-
-  //включение слева в соответствии с текущим значением score1
-  for (byte i = 29 - score1; i < 29; i++)
-  {
-    strip.setPixelColor(i, strip.Color(R, G, B));
-  }
   strip.show();
 
-  //включение справа в соответствии с текущим значением score2
-  for (byte i = 31; i < 31 + score2; i++)
-  {
-    strip.setPixelColor(i, strip.Color(R, G, B));
+  //рандомом задается вероятность появления целевого цвета
+  if (random(0, 10) == 5) {
+
+    //пределы генерации светящегося пикселя
+    pixel = random(diviation, 60 - diviation);
+
+    for (byte i = pixel - diviation; i <= pixel + diviation; i++)
+    {
+      strip.setPixelColor(i, strip.Color(255, 0, 0));
+    }
+    strip.show();
+
+    //задержка горения цвета
+    //прибавление счета игрокам
+      timee = millis();
+      while (millis()-timee < deltaTime) {
+        if (state1) {
+          score1 = score1 + 1;
+        }
+        if (state2) {
+          score2 = score2 + 1;
+        }
+        if (score1 = maxScore) {
+          winOhotnik(1, 255, 0, 0);
+        }
+        if (score2 = maxScore) {
+          winOhotnik(2, 0, 0, 255);
+        }
+      }
+
+    //обнулить цвета
+    for (byte i = pixel - diviation; i <= pixel + diviation; i++)
+    {
+      strip.setPixelColor(i, strip.Color(0, 0, 0));
+    }
+    strip.show();
   }
-  strip.show();
-
-  //если есть нажатие, то...
-  if (state1 == 1) {
-    //buttonPlay(); //включить звук нажатия
-    if (score2 == 0) {
-      score1 = score1 + 1;
-    }
-    if (score2 > 0) {
-      score2 = score2 - 1;
-    }
-
-    //ограничиваем диапазон переменных
-    score1 = constrain(score1, 0, 29);
-    score2 = constrain(score2, 0, 29);
-
-    //обнуляем состояние первых 10 кнопок
-    for (byte i = 0; i < 10; i++) {
-      ButtonState[i] = 0;
-    }
-
-    //если количество нажатий 1 игрока достигло 29, то...
-    if (score1 == 29) {
-      winKanat(1, 255, 0, 0); //игрок 1 выиграл
-    }
-    //обнулить флаг нажатий
-    state1 = 0;
-  }
-
-  //если есть нажатие, то...
-  if (state2 == 1) {
-    //buttonPlay(); //включить звук нажатия
-    if (score1 > 0) {
-      score1 = score1 - 1;
-    }
-    if (score1 == 0) {
-      score2 = score2 + 1;
-    }
-
-    //ограничиваем диапазон переменных
-    score1 = constrain(score1, 0, 29);
-    score2 = constrain(score2, 0, 29);
-
-    //обнуляем состояние вторых 10 кнопок
-    for (byte i = 10; i < 20; i++) {
-      ButtonState[i] = 0;
-    }
-
-    //если количество нажатий 2 игрока достигло 29, то...
-    if (score2 == 29) {
-      winKanat(2, 0, 0, 255); //игрок 2 выиграл
-    }
-    //обнулить флаг нажатий
-    state2 = 0;
-  }
-}
 //=======================================================================================
-
-
 
 //=======================================================================================
 //функция цвета светодиодов (R, G, B 0...255) для победы игрока под номером N.
-void winKanat(N, R, G, B) {
+void winOhotnik(N, R, G, B) {
 
   //winPlay(); //воспроизвести звук выигрыша
   //matrixWriteText(String WIN, int N);  //выиграл игрок N
