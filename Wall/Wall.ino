@@ -34,14 +34,15 @@ unsigned long currentTime = 0;
 void setup() {
   //выбираем режим работы для пинов диодов и кнопок
   for (int i = 0; i < BTN_COUNT; i++) {
-    pinMode(btn[i], INPUT_PULLUP);
+    pinMode(btn[i], INPUT);
     //pinMode(led[i], OUTPUT);
   }
   //последоательный порт для отладки
   Serial.begin(9600);
+
+
   //выбор яркости матрицы
   matrix.setIntensity(7);
-
   //поворот матриц
   matrix.setRotation(0, 1);
   matrix.setRotation(1, 1);
@@ -56,8 +57,13 @@ void loop() {
     case 1: {
         wallie();
       }
+    case 2: {
+        cowboy();
+      }
+    case 3: {
+        turnItOff();
+      }
   }
-
 }
 
 /*===========================================================================================================*/
