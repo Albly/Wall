@@ -43,7 +43,7 @@ void turnAll() {
  * Если нет, то идет проверка на окончание таймера
 */
 void isOffExist() {
-  for (int i, i < BTN_COUNT; i++) {
+  for (int i; i < BTN_COUNT; i++) {
     if (mask[i] == 0) {
       if (isAllOff()) {
         winRound();
@@ -61,7 +61,7 @@ void isOffExist() {
 * false если не все выключены
 */
 boolean isAllOff() {
-  for (int i, i < BTN_COUNT; i++) {
+  for (int i; i < BTN_COUNT; i++) {
     if (mask[i] == 1) {
       return false;
     }

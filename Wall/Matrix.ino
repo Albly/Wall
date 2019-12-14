@@ -1,3 +1,8 @@
+/*===========================================================================================================*/
+/*Выводит счёт по игрокам
+ * left - первый игрок
+ * rigjt - второй игрок
+*/
 void matrixWriteScore(int left, int right) {
   String left_str = String(left);
   String right_str = String(right);
@@ -40,3 +45,4 @@ void matrixWriteScore(int left, int right) {
   matrix.drawPixel(16, 6, HIGH);
   matrix.write();
 }
+/*===========================================================================================================*/
