@@ -8,17 +8,19 @@ const int BTN_COUNT = 20;
 //Пины с группами прерываний
 const int ISR_1 = 2;
 const int ISR_2 = 3;
+const int ZEROS[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
 
 //пины кнопок
 int btn[BTN_COUNT]; // Присвоить номера пинов!!!!
 //массив с состояниями диодов
-int ledState[BTN_COUNT]; // Присвоить номера!!!!
+int ledState[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // Присвоить номера!!!!
 //массив с масками (какие должы быть состояния кнопок во время игры)
 boolean mask[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //счёт первого и второго игрока
-int timers[BTN_COUNT];
+int timers[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} ;
 int timer = 0; 
 boolean flagInterrupt = false;
+boolean flag = false;
 
 int score1 = 0;
 int score2 = 0;
