@@ -163,7 +163,7 @@ void kanat(byte R, byte G, byte B, byte int1, byte int2, byte brightness) {
 
     //если количество нажатий 2 игрока достигло 29, то...
     if (score2 == 29) {
-      winKanat(2, 255, 0, 0); //игрок 2 выиграл
+      winKanat(2, 0, 0, 255); //игрок 2 выиграл
     }
   }
 }
