@@ -37,7 +37,12 @@ void setup() {
   //последоательный порт для отладки
   Serial.begin(9600);
   //выбор яркости матрицы
-  matrix.setIntensity(2);
+  matrix.setIntensity(7);
+
+  matrix.setRotation(0, 1);    // The same hold for the last display
+  matrix.setRotation(1, 1);
+  matrix.setRotation(2, 1);
+  matrix.setRotation(3, 1);
 
 }
 
