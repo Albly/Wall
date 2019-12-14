@@ -18,7 +18,7 @@ void isBtnPressed() {
    * запускает случайный таймер для включения кнопки
   */
   for (int i = 0; i < BTN_COUNT; i++) {
-    if (digitalRead(btnPins[i]) == HIGH) {
+    if (digitalRead(btn[i]) == HIGH) {
       changeLedState(i, LOW);
       mask[i] = 0;
       timers[i] = Random(3000, 5000);
