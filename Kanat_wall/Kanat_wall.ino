@@ -176,6 +176,7 @@ void kanat(byte R, byte G, byte B, byte int1, byte int2, byte brightness) {
 void winKanat(N, R, G, B) {
 
   //winPlay(); //воспроизвести звук выигрыша
+  //matrixWriteText(String WIN, int N);  //выиграл игрок N
 
   Serial.println("win");
   Serial.println(N);
