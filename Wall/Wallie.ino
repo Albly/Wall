@@ -21,7 +21,7 @@ void chooseTheButton() {
     int a = random(0, BTN_COUNT);
     if (mask[a] == false) {
       mask[a] = true;
-      changeLedState(a,HIGH);
+      changeLedState(a, HIGH);
       Serial.print("I've chosen: ");
       Serial.println(a);
       break;
@@ -40,7 +40,7 @@ void waitForPressed() {
       Serial.println("All btns had been pressed");
       for (int i = 0; i < BTN_COUNT; i++) {
         if (mask[i] == true) {
-          changeLedState(i,LOW);
+          changeLedState(i, LOW);
           //digitalWrite(led[i], LOW);
           Serial.print("Switched off the led number: ");
           Serial.println(i);
@@ -65,12 +65,12 @@ boolean isAllPressed() {
         delay(200);
         if (digitalRead(btn[i]) == true) {
           Serial.println(i);
-          return false;
+          return true;
         }
       }
     }
   }
-  return true;
+  return false;
 }
 
 /*===========================================================================================================*/
@@ -86,4 +86,12 @@ void waitWhilePressed() {
       return;
     }
   }
+  roundWin();
 }
+/*===========================================================================================================*/
+
+void roundWin() {
+
+}
+
+/*===========================================================================================================*/
