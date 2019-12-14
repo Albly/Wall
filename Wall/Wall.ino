@@ -5,6 +5,10 @@
 
 //количество кнопок и диодов
 const int BTN_COUNT = 20;
+//Пины с группами прерываний
+const int ISR_1 = 2;
+const int ISR_2 = 3;
+
 //пины кнопок
 int btn[BTN_COUNT]; // Присвоить номера пинов!!!!
 //массив с состояниями диодов
@@ -13,6 +17,7 @@ int ledState[BTN_COUNT]; // Присвоить номера!!!!
 boolean mask[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //счёт первого и второго игрока
 int timers[BTN_COUNT];
+int timer = 0; 
 boolean flagInterrupt = false;
 
 int score1 = 0;
