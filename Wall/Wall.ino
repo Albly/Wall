@@ -10,7 +10,7 @@ const int ISR_1 = 2;
 const int ISR_2 = 3;
 
 //пины кнопок
-int btn[BTN_COUNT]; // Присвоить номера пинов!!!!
+byte btn[BTN_COUNT] = {49, 47, 45, 43, 41, 39, 37, 35, 33, 31, 48, 46, 44, 42, 40, 38, 36, 34, 32, 30}; //номера пинов
 //массив с состояниями диодов
 int ledState[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // Присвоить номера!!!!
 //массив с масками (какие должы быть состояния кнопок во время игры)
@@ -20,6 +20,8 @@ int timers[BTN_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 int timer = 0;
 boolean flagInterrupt = false;
 boolean flag = false;
+
+boolean isGameOver = false;
 
 int score1 = 0;
 int score2 = 0;
@@ -54,13 +56,7 @@ void setup() {
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
 
-  for (int i = 0; i < 20; i++)
-  {
-    ledControll(i, 1); //данные, передаваемые функции
-    delay(550);
-    ledControll(i, 0); //данные, передаваемые функции
-    delay(550);
-  }
+  
   //выбор яркости матрицы
   matrix.setIntensity(7);
   //поворот матриц
@@ -73,23 +69,17 @@ void setup() {
 
 /*===========================================================================================================*/
 void loop() {
-  switch (gameMode) {
-    case 1: {
-        wallie();
-      }
-    case 2: {
-        cowboy();
-      }
-    case 3: {
-        turnItOff();
-      }
-  }
+ wallie();
 }
 
 /*===========================================================================================================*/
 /* Функция лоха
 */
 void loser() {
+  reset();
+  isGameOver=true;
+  offAllLedState();
+  delay(5000);
   Serial.println("Losser");
 }
 /*===========================================================================================================*/
@@ -139,11 +129,12 @@ void changeLedState(byte number, boolean state) {
 
 }
 /*===========================================================================================================*/
-void changeAllLedState(boolean state) {
-  // TODO: ДОПИСАТЬ!!!
-  for (int i = 0; i < BTN_COUNT; i++) {
-
-  }
+void offAllLedState() {
+  digitalWrite(latchPin, LOW);   
+  shiftOut(dataPin, clockPin, LSBFIRST, B00000000);   
+  shiftOut(dataPin, clockPin, LSBFIRST, B00000000); 
+  shiftOut(dataPin, clockPin, LSBFIRST, B00000000);
+  digitalWrite(latchPin, HIGH);
 }
 /*===========================================================================================================*/
 /* Функция победы в раунде
@@ -164,11 +155,12 @@ int Random(int a, int b) {
 
 */
 void reset() {
+  Serial.println("Reset available");
   for (int i = 0; i < BTN_COUNT; i++) {
     mask[i] = 0;
     timers[i] = 0;
+    ledState[i]=0;
   }
-  changeAllLedState(LOW);
   timer = 0;
   flagInterrupt = false;
   flag = false;
