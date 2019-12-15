@@ -4,6 +4,7 @@
  * rigjt - второй игрок
 */
 void matrixWriteScore(int left, int right) {
+  matrix.fillScreen(LOW);
   String left_str = String(left);
   String right_str = String(right);
 
