@@ -3,18 +3,14 @@
 
 DFRobotDFPlayerMini myDFPlayer;  //инициализируем плеер
 void printDetail(uint8_t type, int value);
-
-byte volume = 10; //sound level
-static unsigned long timer;
-byte musicTime = 3;
+byte volume = 15; //sound level
+static unsigned long timer = 0;
+int musicTime = 3000;
 
 
 void setup()
 {
-  Serial1.begin(9600); //скорость com-port, которую поддерживает плеер
-  if (!myDFPlayer.begin(Serial1)) {}  //Use softwareSerial to communicate with mp3.
-  myDFPlayer.volume(volume);
-  
+  dfp_init();
 }
 void loop()
 {
@@ -28,6 +24,13 @@ void loop()
   meow();
   mario();
 }
+
+void dfp_init(){
+Serial1.begin(9600); //скорость com-port, которую поддерживает плеер
+  if (!myDFPlayer.begin(Serial1)) {}  //Use softwareSerial to communicate with mp3.
+  myDFPlayer.volume(volume);  
+}
+  
 //=======================================================
 void win()
 {
