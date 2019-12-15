@@ -1,9 +1,14 @@
 void wallie() {
   /*Игра Wallie*/
-    chooseTheButton();
-    waitForPressed();
+  isGameOver = false;
+  chooseTheButton();
+  waitForPressed();
+  if (!isGameOver) {
     waitWhilePressed();
+  }
+
 }
+
 /*===========================================================================================================*/
 /*Выбор случайной кнопки
    Использует аналоговый пин А5 для снятия наводок
@@ -17,12 +22,13 @@ void chooseTheButton() {
   Serial.println("choosing random button");
   while (true) {
     randomSeed(analogRead(A5));
-    int a = random(0, BTN_COUNT);
+    int a = random(0, BTN_COUNT - 1);
     if (mask[a] == false) {
       mask[a] = true;
       changeLedState(a, HIGH);
       Serial.print("I've chosen: ");
       Serial.println(a);
+      delay(1000);
       break;
     }
   }
@@ -33,24 +39,15 @@ void chooseTheButton() {
    Если нажата неверная кнопка вызывает лоха
 */
 void waitForPressed() {
-  Serial.println("Waiting for pressing");
-  for (currentTime = millis(); millis() - currentTime < 5000;) {
+  Serial.println("Жду, когда все будет нажато");
+  for (currentTime = millis(); millis() - currentTime < 10000;) {
     if (isAllPressed()) {
-      Serial.println("All btns had been pressed");
-      for (int i = 0; i < BTN_COUNT; i++) {
-        if (mask[i] == true) {
-          changeLedState(i, LOW);
-          //digitalWrite(led[i], LOW);
-          Serial.print("Switched off the led number: ");
-          Serial.println(i);
-        }
-      }
+      Serial.println("Все нужные кнопки нажаты");
       return;
     }
   }
   Serial.println("Btns hadn't been pressed");
   loser();
-
 }
 /*===========================================================================================================*/
 /* Проверяет все ли кнопки из маски были нажаты
@@ -58,19 +55,26 @@ void waitForPressed() {
     Возвращает false если не все кнопки были нажаты
 
 */
+
 boolean isAllPressed() {
   for (int i = 0 ; i < BTN_COUNT ; i++ ) {
     if (mask[i] == true) {
-      if (digitalRead(btn[i]) == true) {
-        delay(200);
-        if (digitalRead(btn[i]) == true) {
-          Serial.println(i);
-          return true;
+      if (digitalRead(btn[i]) == false) {
+        delay(30);
+        if (digitalRead(btn[i]) == false) {
+          return false;
         }
       }
     }
+    else if ((mask[i] == false) and (digitalRead(btn[i]) == true )) {
+      Serial.print("Нажата неверная кнопка " );
+      Serial.println(i);
+      loser();
+      return;
+
+    }
   }
-  return false;
+  return true;
 }
 
 /*===========================================================================================================*/
@@ -78,20 +82,13 @@ boolean isAllPressed() {
     Если не нажаты, то вызывает функцию лоха
 */
 void waitWhilePressed() {
-  Serial.println("Searching for unpressing");
-  for (currentTime = millis(); millis() - currentTime < 3000;) {
+  Serial.println("Ищу отжатия");
+  for (currentTime = millis(); millis() - currentTime < 5000;) {
     if (!isAllPressed()) {
-      Serial.println("Unpressing detected");
+      Serial.println("Отжатие найдено");
       loser();
       return;
     }
   }
-  roundWin();
+  Serial.println("Winner");
 }
-/*===========================================================================================================*/
-
-void roundWin() {
-Serial.println("Win");
-}
-
-/*===========================================================================================================*/
